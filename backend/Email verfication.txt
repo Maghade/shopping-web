@@ -1,0 +1,5 @@
+Email verfication 
+orderPage on admin
+Notification
+render url Point-to domain
+registration:signup country mobile
