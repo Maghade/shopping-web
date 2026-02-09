@@ -91,44 +91,60 @@ export default function OrderList() {
               <div className="table-responsive">
                 <table className="table table-striped table-hover mb-0 align-middle">
                   <thead className="table-dark">
-                    <tr>
-                      <th></th>
-                      <th>Date</th>
-                      <th>Product</th>
-                      <th className="text-center">Actions</th>
-                    </tr>
-                  </thead>
+  <tr>
+    <th></th>
+    <th>Date</th>
+    <th>Product</th>
+    <th>Size</th>   {/* 👈 NEW */}
+    <th className="text-center">Actions</th>
+  </tr>
+</thead>
 
                   <tbody>
                     {currentItems.map((order) => (
-                      <tr key={order._id}>
-                        <td>
-                          {order.type === "Order" && (
-                            <span className="badge bg-primary px-3 py-2">
-                              <FaBox className="me-1" /> Order
-                            </span>
-                          )}
-                        </td>
-                        <td>
-                          {order.date
-                            ? new Date(order.date).toLocaleDateString()
-                            : "—"}
-                        </td>
-                        <td className="fw-semibold">
-                          {order.productName ||
-                            order.items?.[0]?.ProductName ||
-                            "—"}
-                        </td>
+                    <tr key={order._id}>
+  <td>
+    {order.type === "Order" && (
+      <span className="badge bg-primary px-3 py-2">
+        <FaBox className="me-1" /> Order
+      </span>
+    )}
+  </td>
 
-                        <td className="text-center">
-                          <FaTrash
-                            className="text-danger fs-5"
-                            style={{ cursor: "pointer" }}
-                            title="Delete"
-                            onClick={() => handleDelete(order._id)}
-                          />
-                        </td>
-                      </tr>
+ <td>
+  {order.date
+    ? new Date(order.date).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })
+    : "—"}
+</td>
+
+  <td className="fw-semibold">
+    {order.productName ||
+      order.items?.[0]?.ProductName ||
+      "—"}
+  </td>
+
+  {/* ✅ SIZE COLUMN */}
+  <td>
+    {order.items && order.items.length > 0
+      ? order.items.map((item, index) => (
+          <div key={index}>{item.size || "—"}</div>
+        ))
+      : order.size || "—"}
+  </td>
+
+  <td className="text-center">
+    <FaTrash
+      className="text-danger fs-5"
+      style={{ cursor: "pointer" }}
+      title="Delete"
+      onClick={() => handleDelete(order._id)}
+    />
+  </td>
+</tr>
                     ))}
                   </tbody>
                 </table>

@@ -26,7 +26,6 @@ const Add = ({ token }) => {
   const [category, setCategory] = useState("");
   const [subcategory, setsubCategory] = useState("");
 const [strength, setStrength] = useState("");
-const [size, setSize] = useState("")
   // Additional info
   const [brand, setBrand] = useState("");
   const [manufacturer, setManufacturer] = useState("");
@@ -94,7 +93,6 @@ const onSubmitHandler = async (e) => {
     formData.append("strength", strength);
     formData.append("usageApplication", usageApplication);
     formData.append("countryOfOrigin", countryOfOrigin);
-    formData.append("size", size);
 
     if (customFields && customFields.length > 0) {
       formData.append("customFields", JSON.stringify(customFields));
@@ -142,7 +140,6 @@ const onSubmitHandler = async (e) => {
     setCountryOfOrigin("");
     setUsageApplication("");
     setCustomFields([]);
-    setSize("");
     navigate("/products/list");
   };
 
@@ -201,7 +198,6 @@ const onSubmitHandler = async (e) => {
         setPacking(product.packing || "");
         setCountryOfOrigin(product.countryOfOrigin || "");
         setUsageApplication(product.usageApplication || "");
-        setSize(product.size || "");
         setCustomFields(product.customFields || []);
       } else {
         toast.error(response.data.message);
@@ -347,27 +343,7 @@ useEffect(() => {
         </div>
         </div>
 
-{/* Size Selection */}
-<div className="w-full mt-4 col-span-2">
-  <p className="mb-2 font-semibold">Size</p>
 
-  <div className="flex gap-6">
-    {["Small", "Medium", "Large"].map((s) => (
-      <label key={s} className="flex items-center gap-2 cursor-pointer">
-        <input
-          type="radio"
-          name="size"
-          value={s}
-          checked={size === s}
-          onChange={(e) => setSize(e.target.value)}
-          className="accent-purple-600"
-        />
-        {s}
-      </label>
-    ))}
-  </div>
-</div>
- 
 
       {/* Buttons */}
       <div className="flex gap-6 mt-6">

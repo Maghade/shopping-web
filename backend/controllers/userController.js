@@ -216,21 +216,22 @@ const resetPassword = async (req, res) => {
 // --------------------- Request Functions ---------------------
 
 
-const createRequest = async (req, res) => {
+ const createRequest = async (req, res) => {
   try {
-    const { userId, productId, message } = req.body;
+    const { userId, productId, message, size } = req.body;
 
-    if (!userId || !productId) {
-      return res.status(400).json({ message: "UserId and ProductId are required" });
-    }
+    const request = await RequestModel.create({
+      userId,
+      productId,
+      message,
+      size, // 👈 SAVE SIZE
+      images: req.files?.map(f => f.path) || [],
+      email: req.body.email || "",
+    });
 
-    const newRequest = new RequestModel({ userId, productId, message });
-    await newRequest.save();
-
-    res.status(201).json({ message: "Request saved successfully", request: newRequest });
+    res.status(201).json({ success: true, request });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 

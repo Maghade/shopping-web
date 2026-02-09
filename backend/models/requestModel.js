@@ -20,6 +20,10 @@ const requestSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    size: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

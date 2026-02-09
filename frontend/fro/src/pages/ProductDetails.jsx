@@ -17,6 +17,7 @@ export default function ProductDetails({ product: propProduct, related = [] }) {
   const [selectedCatObj, setSelectedCatObj] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
+    const [size, setSize] = useState("");
   const singleProduct = useSelector((state) => state.products.singleProduct);
 
 
@@ -46,12 +47,17 @@ export default function ProductDetails({ product: propProduct, related = [] }) {
       }, 1000);
       return;
     }
-
+if (!size) {
+  toast.error("Please select a size");
+  return;
+}
     try {
       await dispatch(
         sendRequest({
           userId: user?._id,
           productId: product._id,
+            size: size,   // 👈 ADD THIS
+
           message: `User is interested in ${product.name}`,
         })
       ).unwrap();
@@ -312,7 +318,21 @@ export default function ProductDetails({ product: propProduct, related = [] }) {
             >
               Additional Information
             </h3>
-
+  <div className="flex gap-6">
+    {["Small", "Medium", "Large"].map((s) => (
+      <label key={s} className="flex items-center gap-2 cursor-pointer">
+        <input
+          type="radio"
+          name="size"
+          value={s}
+          checked={size === s}
+          onChange={(e) => setSize(e.target.value)}
+          className="accent-purple-600"
+        />
+        {s}
+      </label>
+    ))}
+  </div>
             <ul
               style={{
                 listStyleType: "disc",
@@ -322,9 +342,9 @@ export default function ProductDetails({ product: propProduct, related = [] }) {
               }}
             >
               
-             <li>
+             {/* <li>
                 <strong>Size:</strong> {product.size || "N/A"}
-              </li> 
+              </li>  */}
             
               <li>
                 <strong>Category:</strong>{" "}
